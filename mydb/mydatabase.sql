@@ -1,0 +1,1 @@
+insert into `posts` (`author`, `description`, `id`, `title`) values ('Anonymous', 'my first post\r\n', 58, 'My first Post');
