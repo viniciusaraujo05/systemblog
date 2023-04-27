@@ -24,7 +24,7 @@ class PostsController
      *
      * @return array
      */
-    public function posts(): array
+    public function allPosts(): array
     {
         $posts = new PostsModel();
         return $posts->getAllPosts();
@@ -35,11 +35,11 @@ class PostsController
      *
      * @return bool
      */
-    public function addPost(): bool
+    public function add(): bool
     {
         $title = filter_input(INPUT_POST, 'title');
         $description = filter_input(INPUT_POST, 'description');
-        $author = 0;
+        $author = 'Anonymous';
 
         if (!$title || !$description) {
             return false;
@@ -47,7 +47,48 @@ class PostsController
 
         $posts = new PostsModel();
         $posts->setPost($title, $description, $author);
+        header('Location: /');
 
         return true;
      }
+
+    /**
+     * Update method
+     *
+     * @return bool
+     */
+    public function update(): bool
+    {
+        $id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+        $title = filter_input(INPUT_POST, 'title');
+        $description = filter_input(INPUT_POST, 'description');
+
+        if (!$title || !$description) {
+            return false;
+        }
+
+        $posts = new PostsModel();
+        $posts->updatePost($id, $title, $description);
+
+        header('Location: /');
+
+        return true;
+    }
+
+    /**
+     * Update method
+     *
+     * @return bool
+     */
+    public function delete(): bool
+    {
+        $id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+
+        $posts = new PostsModel();
+        $posts->deletePost($id);
+
+        header('Location: /');
+
+        return true;
+    }
 }
