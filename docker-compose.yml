@@ -9,7 +9,7 @@ services:
     ports:
       - "9001:9001"
     links:
-      - service-postgres
+      - service-mysql
     volumes:
       - '.:/var/www/html'
     env_file:
@@ -17,14 +17,18 @@ services:
     networks:
       - myapp_network
 
-  service-postgres:
-    image: postgres
+  service-mysql:
+    image: mysql:8.0.33
+    restart: always
+    ports:
+      - '3306:3306'
     environment:
-      POSTGRES_USER: b2b
-      POSTGRES_PASSWORD: b2b
-      POSTGRES_DB: b2b
+      MYSQL_DATABASE: b2b
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - mysql-db:/var/lib/mysql
     networks:
       - myapp_network
 
@@ -44,5 +48,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres-db:
+  mysql-db:
     driver: local

@@ -1,3 +1,2 @@
 <?php
-   echo "hello";
-?>
+require('router.php');
