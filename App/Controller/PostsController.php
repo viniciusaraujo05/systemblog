@@ -9,6 +9,13 @@ use App\Model\PostsModel;
  */
 class PostsController
 {
+
+    private $posts;
+
+    public function __construct()
+    {
+        $this->posts = new PostsModel();
+    }
     /**
      * Index method
      *
@@ -26,8 +33,7 @@ class PostsController
      */
     public function allPosts(): array
     {
-        $posts = new PostsModel();
-        return $posts->getAllPosts();
+        return $this->posts->getAllPosts();
     }
 
     /**
@@ -39,14 +45,13 @@ class PostsController
     {
         $title = filter_input(INPUT_POST, 'title');
         $description = filter_input(INPUT_POST, 'description');
-        $author = 'Anonymous';
+        $author = $_SESSION['login']['0']['users'];
 
         if (!$title || !$description) {
             return false;
         }
 
-        $posts = new PostsModel();
-        $posts->setPost($title, $description, $author);
+        $this->posts->setPost($title, $description, $author);
         header('Location: /');
 
         return true;
@@ -67,8 +72,7 @@ class PostsController
             return false;
         }
 
-        $posts = new PostsModel();
-        $posts->updatePost($id, $title, $description);
+        $this->posts->updatePost($id, $title, $description);
 
         header('Location: /');
 
@@ -84,8 +88,7 @@ class PostsController
     {
         $id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
 
-        $posts = new PostsModel();
-        $posts->deletePost($id);
+        $this->posts->deletePost($id);
 
         header('Location: /');
 

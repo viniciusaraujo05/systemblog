@@ -25,6 +25,18 @@ $routes = [
         'controller' => 'App\Controller\PostsController',
         'method' => 'delete',
     ],
+    '/login' => [
+        'controller' => 'App\Controller\LoginController',
+        'method' => 'index',
+    ],
+    '/checkUser' => [
+        'controller' => 'App\Controller\LoginController',
+        'method' => 'checkUser',
+    ],
+    '/logout' => [
+        'controller' => 'App\Controller\LoginController',
+        'method' => 'logoutUser',
+    ],
 ];
 
 if (array_key_exists($uri, $routes)) {

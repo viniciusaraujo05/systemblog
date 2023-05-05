@@ -1,5 +1,4 @@
 <?php
-
 $postsController = new \App\Controller\PostsController();
 ?>
 <!DOCTYPE html>
@@ -12,12 +11,29 @@ $postsController = new \App\Controller\PostsController();
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#">MyBLog</a>
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCommentModal">
-                Novo Post
-            </button>
-        </li>
+        <?php if (!empty($_SESSION['login'])) {?>
+            <li class="nav-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCommentModal">
+                    Novo Post
+                </button>
+            </li>
+        <?php }?>
     </ul>
+    <?php if (empty($_SESSION['login'])) {?>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    <?php } else {?>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Sair</a>
+            </li>
+        </ul>
+    <?php }?>
+
+
 </nav>
 
 <!--Modal para adicionar post-->
@@ -32,7 +48,7 @@ $postsController = new \App\Controller\PostsController();
                 </button>
             </div>
             <div class="modal-body">
-                <form action="http://localhost/addPost" id="addPostForm" method="POST">
+                <form action="/addPost" id="addPostForm" method="POST">
                     <div class="form-group">
                         <label for="commentTitle">Título do Post</label>
                         <input type="text" class="form-control" id="title" name="title" placeholder="Insira o título">
@@ -62,16 +78,19 @@ foreach ($postsController->allPosts() as $post) { ?>
             <p><?php
                 echo $post['author']; ?></p>
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editCommentModal_<?php
-            echo $post['id']; ?>">Editar
-            </button>
-
-            <form action="http://localhost/deletePost"  method="POST">
-                <input type="hidden" name="post_id" value="<?php
-                echo $post['id']; ?>">
-                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteCommentModal">Excluir
-                </button>
-            </form>
+            <?php if (!empty($_SESSION['login'])) { ?>
+                <?php if ($_SESSION['login']['0']['users'] === $post['author'] || $_SESSION['login']['0']['typeUser'] === 1) { ?>
+                    <div class="d-inline-block mr-2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editCommentModal_<?php echo $post['id']; ?>">Editar</button>
+                    </div>
+                    <div class="d-inline-block">
+                        <form action="/deletePost" method="POST">
+                            <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
+                            <button type="submit" onclick="return confirmDelete();" class="btn btn-danger" data-toggle="modal" data-target="#deleteCommentModal">Excluir</button>
+                        </form>
+                    </div>
+                <?php } ?>
+            <?php } ?>
         </div>
     </div>
 
@@ -88,7 +107,7 @@ foreach ($postsController->allPosts() as $post) { ?>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="http://localhost/updatePost" id="editPostForm" method="POST">
+                    <form action="/updatePost" id="editPostForm" method="POST">
                         <input type="hidden" name="post_id" value="<?php
                         echo $post['id']; ?>">
                         <div class="form-group">
@@ -111,11 +130,16 @@ foreach ($postsController->allPosts() as $post) { ?>
             </div>
         </div>
     </div>
-    <?php
-} ?>
+    <?php } ?>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function confirmDelete() {
+        return confirm("Tem certeza que deseja excluir este post?");
+    }
+</script>
 </body>
 </html>
