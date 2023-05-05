@@ -123,7 +123,7 @@ class UserController
     public function delete(): bool
     {
         $id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-        $this->userModel->deletePost($id);
+        $this->userModel->deleteUser($id);
 
         header('Location: /admin');
 

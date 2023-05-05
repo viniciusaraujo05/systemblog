@@ -89,36 +89,13 @@ class UserModel extends Connection
     }
 
     /**
-     * UpdatePost method
-     *
-     * @param int $id
-     * @param String $title
-     * @param String $description
-     *
-     * @return bool
-     */
-    public function updatePost(int $id, string $title, string $description): bool
-    {
-        try {
-            $stm = $this->_connection->prepare(
-                "UPDATE users SET title = '$title', description = '$description' WHERE id = $id"
-            );
-            $stm->execute();
-
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
-
-    /**
      * DeletePost method
      *
      * @param int $id
      *
      * @return bool
      */
-    public function deletePost(int $id): bool
+    public function deleteUser(int $id): bool
     {
         try {
             $stm = $this->_connection->prepare(
