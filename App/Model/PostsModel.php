@@ -30,7 +30,9 @@ class PostsModel extends Connection
     public function getAllPosts(): bool|array
     {
         try {
-            $stmt = $this->_connection->prepare("SELECT * FROM posts");
+            $stmt = $this->_connection->prepare(
+                "SELECT * FROM posts"
+            );
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -47,7 +49,9 @@ class PostsModel extends Connection
     public function getPost($id): bool|array
     {
         try {
-            $stmt = $this->_connection->prepare("SELECT * FROM posts WHERE id = ?");
+            $stmt = $this->_connection->prepare(
+                "SELECT * FROM posts WHERE id = ?"
+            );
             $stmt->bindValue(1, $id);
             $stmt->execute();
 
@@ -59,7 +63,7 @@ class PostsModel extends Connection
 
 
     /**
-     * UpdatePosts method
+     * setPost method
      *
      * @param $title
      * @param $description

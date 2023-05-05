@@ -26,17 +26,34 @@ $routes = [
         'method' => 'delete',
     ],
     '/login' => [
-        'controller' => 'App\Controller\LoginController',
+        'controller' => 'App\Controller\UserController',
         'method' => 'index',
     ],
     '/checkUser' => [
-        'controller' => 'App\Controller\LoginController',
+        'controller' => 'App\Controller\UserController',
         'method' => 'checkUser',
     ],
     '/logout' => [
-        'controller' => 'App\Controller\LoginController',
+        'controller' => 'App\Controller\UserController',
         'method' => 'logoutUser',
     ],
+    '/loginGuest' => [
+        'controller' => 'App\Controller\UserController',
+        'method' => 'userGuest',
+    ],
+    '/addUser' => [
+        'controller' => 'App\Controller\UserController',
+        'method' => 'add',
+    ],
+    '/deleteUser' => [
+        'controller' => 'App\Controller\UserController',
+        'method' => 'delete',
+    ],
+    '/admin' => [
+        'controller' => 'App\Controller\AdminController',
+        'method' => 'index',
+    ],
+
 ];
 
 if (array_key_exists($uri, $routes)) {

@@ -19,12 +19,19 @@ $postsController = new \App\Controller\PostsController();
             </li>
         <?php }?>
     </ul>
+
+    <?php if (!empty($_SESSION['login']['0']['typeUser'] == 1)) {?>
+        <ul class="navbar-nav ml-auto mr-auto">
+            <li class="nav-item">
+                <a href="/admin" class="nav-link">Admin Painel</a>
+            </li>
+        </ul>
+    <?php }?>
     <?php if (empty($_SESSION['login'])) {?>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/login">Login</a>
             </li>
-        </ul>
     <?php } else {?>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -32,7 +39,6 @@ $postsController = new \App\Controller\PostsController();
             </li>
         </ul>
     <?php }?>
-
 
 </nav>
 
@@ -78,7 +84,7 @@ foreach ($postsController->allPosts() as $post) { ?>
             <p><?php
                 echo $post['author']; ?></p>
 
-            <?php if (!empty($_SESSION['login'])) { ?>
+            <?php if (!empty($_SESSION['login']) && $_SESSION['login']['0']['typeUser'] != 0) { ?>
                 <?php if ($_SESSION['login']['0']['users'] === $post['author'] || $_SESSION['login']['0']['typeUser'] === 1) { ?>
                     <div class="d-inline-block mr-2">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editCommentModal_<?php echo $post['id']; ?>">Editar</button>

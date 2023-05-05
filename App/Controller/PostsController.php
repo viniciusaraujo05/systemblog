@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\PostsModel;
+use mysql_xdevapi\Exception;
 
 /**
  * Class PostsController
@@ -23,7 +24,11 @@ class PostsController
      */
     public function index(): void
     {
-        require_once(__DIR__ . '/../View/home.php');
+        if ($_SESSION['login']) {
+            require_once(__DIR__ . '/../View/home.php');
+            exit();
+        }
+        require_once(__DIR__ . '/../View/login.php');
     }
 
     /**
@@ -43,18 +48,22 @@ class PostsController
      */
     public function add(): bool
     {
-        $title = filter_input(INPUT_POST, 'title');
-        $description = filter_input(INPUT_POST, 'description');
-        $author = $_SESSION['login']['0']['users'];
+        try {
+            $title = filter_input(INPUT_POST, 'title');
+            $description = filter_input(INPUT_POST, 'description');
+            $author = $_SESSION['login'][0]['users'] ?? "Anonymous";
 
-        if (!$title || !$description) {
-            return false;
+            if (!$title || !$description) {
+                return false;
+            }
+
+            $this->posts->setPost($title, $description, $author);
+            header('Location: /');
+
+            return true;
+        } catch (Exception){
+            echo "Não foi possivel adicionar esse post";
         }
-
-        $this->posts->setPost($title, $description, $author);
-        header('Location: /');
-
-        return true;
      }
 
     /**

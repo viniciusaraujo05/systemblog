@@ -3,25 +3,6 @@
 <html>
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .login-container {
-            max-width: 500px;
-            margin: 0 auto;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 20px;
-        }
-        .vertical-center {
-            min-height: 100%;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-        .guest-button {
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
 <div class="container vertical-center">
@@ -40,8 +21,36 @@
             <button type="submit" class="btn btn-primary">Entrar</button>
         </form>
         <br>
-        <button type="button" class="btn btn-link guest-button">Acesso como visitante</button>
+        <a href="/loginGuest" type="button" onclick="return confirmGuest();" class="btn btn-link guest-button">Acesso como visitante</a>
     </div>
 </div>
 </body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .login-container {
+        max-width: 500px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .vertical-center {
+        min-height: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    .guest-button {
+        text-decoration: underline;
+    }
+</style>
+
+<script>
+    function confirmGuest() {
+        return confirm("Olá! Ao acessar o nosso blog como visitante, você poderá apenas criar novos posts," +
+            " visualizar posts dos nossos usuarios." +
+            " A função editar e excluir é somente para membros registrados.");
+    }
+</script>
+
 </html>
